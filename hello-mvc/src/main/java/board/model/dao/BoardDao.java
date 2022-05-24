@@ -14,9 +14,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import board.model.dto.Attachment;
-import board.model.dto.Board;
 import board.model.dto.BoardExt;
 import board.model.exception.BoardException;
+
+
 
 public class BoardDao {
 	private Properties prop = new Properties();
@@ -94,6 +95,70 @@ public class BoardDao {
 		}
 		
 		return totalContents;
+	}
+
+    public int insertBoard(Connection conn, BoardExt board) {
+        PreparedStatement pstmt = null;
+        String sql = prop.getProperty("insertBoard");
+        int result = 0;
+        
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, board.getTitle());
+            pstmt.setString(2, board.getMemberId());
+            pstmt.setString(3, board.getContent());    
+            
+            result = pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new BoardException("게시글 등록 오류", e);
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    // DQL 1행1열짜리는 반복문으로 인덱스 1 가져오기
+	public int findCurrentBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int no = 0;
+		String sql = prop.getProperty("findCurrentBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next())
+				no = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new BoardException("게시글번호 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return no;
+	}
+
+	// DML 은 int를 반환하도록 처리한다.
+	public int insertAttachment(Connection conn, Attachment attach) {
+		PreparedStatement pstmt = null;
+        String sql = prop.getProperty("insertAttachment");
+        int result = 0;
+        
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, attach.getBoardNo());
+            pstmt.setString(2, attach.getOriginalFilename());
+            pstmt.setString(3, attach.getRenameFilename());    
+            
+            result = pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new BoardException("첨부파일 등록 오류", e);
+        } finally {
+            close(pstmt);
+        }
+        return result;
 	}
 
 //	public List<Attachment> findAllBoardAttach(Connection conn) {
