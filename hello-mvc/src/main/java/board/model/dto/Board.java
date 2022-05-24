@@ -3,7 +3,6 @@ package board.model.dto;
 import java.sql.Date;
 
 public class Board {
-
 	private int no;
 	private String title;
 	private String memberId;
@@ -13,11 +12,12 @@ public class Board {
 	
 	public Board() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Board(int number, String title, String memberId, String content, int readCount, Date regDate) {
+	public Board(int no, String title, String memberId, String content, int readCount, Date regDate) {
 		super();
-		this.no = number;
+		this.no = no;
 		this.title = title;
 		this.memberId = memberId;
 		this.content = content;
@@ -29,8 +29,8 @@ public class Board {
 		return no;
 	}
 
-	public void setNo(int number) {
-		this.no = number;
+	public void setNo(int no) {
+		this.no = no;
 	}
 
 	public String getTitle() {
@@ -75,8 +75,11 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [number=" + no + ", title=" + title + ", memberId=" + memberId + ", content=" + content
+		return "Board [no=" + no + ", title=" + title + ", memberId=" + memberId + ", content=" + content
 				+ ", readCount=" + readCount + ", regDate=" + regDate + "]";
 	}
-		
+	
+	
+	
+	
 }

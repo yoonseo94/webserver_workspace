@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import board.model.dto.Attachment;
 import board.model.dto.Board;
+import board.model.dto.BoardExt;
 import board.model.exception.BoardException;
 
 public class BoardDao {
@@ -32,22 +33,23 @@ public class BoardDao {
 	/*
 	 * 1건 조회시 Board객체 하나 또는 null 리턴
 	 * n건 조회시 여러건의 Board객체를 가진 list 또는 빈 list
+	 * DQL 일때 resultset필요
 	 */
-	public List<Board> findAllBoard(Connection conn, Map<String, Object> param) {
+	public List<BoardExt> findAll(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		List<Board> list = new ArrayList<>();
-		String sql = prop.getProperty("findAllBoard");
+		List<BoardExt> list = new ArrayList<>();
+		String sql = prop.getProperty("findAll");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			// 시작 페이지 끝나는 페이지 (1페이지 : 1 ~ 10)
 			pstmt.setInt(1, (int) param.get("start"));
 			pstmt.setInt(2, (int) param.get("end"));
-			
 			rset = pstmt.executeQuery();
+			
 			while(rset.next()) {
-				Board board = handleBoardResultSet(rset);
+				BoardExt board = handleBoardResultSet(rset);
 				list.add(board);
 			}
 		} catch (Exception e) {
@@ -59,14 +61,15 @@ public class BoardDao {
 		return list;
 	}
 
-	private Board handleBoardResultSet(ResultSet rset) throws SQLException {
-		Board board = new Board();
+	private BoardExt handleBoardResultSet(ResultSet rset) throws SQLException {
+		BoardExt board = new BoardExt();
 		board.setNo(rset.getInt("no"));
 		board.setTitle(rset.getString("title"));
 		board.setMemberId(rset.getString("member_id"));
 		board.setContent(rset.getString("content"));
-		board.setReadCount(rset.getInt("read_count"));
-		board.setRegDate(rset.getDate("reg_date"));
+		board.setReadCount(rset.getInt("read_count"));				
+		board.setRegDate(rset.getDate("reg_date"));				
+		board.setAttachCount(rset.getInt("attach_cnt"));
 		
 		return board;
 	}
@@ -93,22 +96,22 @@ public class BoardDao {
 		return totalContents;
 	}
 
-	public List<Attachment> findAllBoardAttach(Connection conn) {
-		PreparedStatement pstmt = null;
-		ResultSet  rset = null;
-		List<Attachment> attachList = new ArrayList<>();
-		String sql = prop.getProperty("findAllBoardAttach");
-		
-		try {
-			
-		} catch (Exception e) {
-			throw new BoardException("첨부파일 게시판 관련 오류", e);
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		return attachList;
-	}
+//	public List<Attachment> findAllBoardAttach(Connection conn) {
+//		PreparedStatement pstmt = null;
+//		ResultSet  rset = null;
+//		List<Attachment> attachList = new ArrayList<>();
+//		String sql = prop.getProperty("findAllBoardAttach");
+//		
+//		try {
+//			
+//		} catch (Exception e) {
+//			throw new BoardException("첨부파일 게시판 관련 오류", e);
+//		} finally {
+//			close(rset);
+//			close(pstmt);
+//		}
+//		return attachList;
+//	}
 
 
 }

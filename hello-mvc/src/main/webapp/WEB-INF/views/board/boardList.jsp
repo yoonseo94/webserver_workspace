@@ -1,12 +1,10 @@
 <%@page import="java.util.List"%>
-<%@ page import="board.model.dto.Board, java.util.ArrayList, board.model.dto.Attachment" %>
+<%@page import="board.model.dto.BoardExt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%
-	List<Board> list = (List<Board>) request.getAttribute("list");
-	List<Attachment> attachList = (List<Attachment>) request.getAttribute("attachList");
-	String pagebar = (String) request.getAttribute("pagebar");
+<% 
+	List<BoardExt> list = (List<BoardExt>) request.getAttribute("list");
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
@@ -23,40 +21,35 @@
 			</tr>
 		</thead>
 		<tbody>
-		<% 
-			if(list != null && !list.isEmpty()){
-				for(Board board : list) {
-		%>
-				<tr>
-					<td><%= board.getNo() %></td>
-					<td><%= board.getTitle() %></td>
-					<td><%= board.getMemberId() %></td>
-					<td><%= board.getRegDate() %></td>	
-				<% 
-					if(attachList != null && !attachList.isEmpty()){
-						for (Attachment attachment : attachList){ 
-							if(board.getNo() == attachment.getNo()){ %>
-								<td><img src="<%= request.getContextPath() %>/images/file.png"></td>
-							<% }
-						}
-					} else {%>
-					<td></td>
-					<% } %>
-					
-					<td><%= board.getReadCount() %></td>
-				</tr>
-	<%
-					
-				}
-			}
-		
-	%>
-
+<%
+	if(list == null || list.isEmpty()){
+%>
+		<tr>
+			<td colspan="6"> 조회된 정보가 없습니다.</td>
+		</tr>
+<%
+	} else {
+		for(BoardExt board : list){
+%>
+			<tr>
+				<td><%= board.getNo() %></td>
+				<td><%= board.getTitle() %></td>
+				<td><%= board.getMemberId() %></td>
+				<td><%= board.getRegDate() %></td>
+				<td>
+		<% if(board.getAttachCount() > 0) { %>					
+					<img src="<%= request.getContextPath() %>/images/file.png" alt="" />
+		<% } %>					
+				</td>
+				<td><%= board.getReadCount() %></td>
+			</tr>
+<% 	
+		}
+	} 
+%>
 		</tbody>
 	</table>
 
-	<div id='pageBar'>
-		<%= pagebar %>
-	</div>
+	<div id='pageBar'><%= request.getAttribute("pagebar") %></div>
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

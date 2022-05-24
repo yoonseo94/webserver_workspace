@@ -1,9 +1,7 @@
 package board.model.service;
 
 import static common.JdbcTemplate.close;
-import static common.JdbcTemplate.commit;
 import static common.JdbcTemplate.getConnection;
-import static common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
@@ -11,16 +9,16 @@ import java.util.Map;
 
 import board.model.dao.BoardDao;
 import board.model.dto.Attachment;
-import board.model.dto.Board;
+import board.model.dto.BoardExt;
 
 public class BoardService {
 	public static final int NUM_PER_PAGE = 10; // 한페이지에 표시할 컨텐츠수
 	private static BoardDao boardDao = new BoardDao();
 	
 	
-	public List<Board> findAllBoard(Map<String, Object> param) {
+	public List<BoardExt> findAll(Map<String, Object> param) {
 		Connection conn = getConnection();
-		List<Board> list = boardDao.findAllBoard(conn, param);
+		List<BoardExt> list = boardDao.findAll(conn, param);
 		close(conn);
 		return list;
 	}
@@ -34,11 +32,11 @@ public class BoardService {
 		return totalContents;
 	}
 
-	public List<Attachment> findAllBoardAttach() {
-		Connection conn = getConnection();
-		List<Attachment> attachList = boardDao.findAllBoardAttach(conn);
-		close(conn);
-		return attachList;
-	}
+//	public List<Attachment> findAllBoardAttach() {
+//		Connection conn = getConnection();
+//		List<Attachment> attachList = boardDao.findAllBoardAttach(conn);
+//		close(conn);
+//		return attachList;
+//	}
 
 }
