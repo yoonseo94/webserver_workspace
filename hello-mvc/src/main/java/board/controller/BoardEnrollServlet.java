@@ -58,14 +58,15 @@ public class BoardEnrollServlet extends HttpServlet {
         try {
             //2. MultipartRequest객체 생성
         	// b.파일저장경로
-        	// /hello-mvc/src/main/webapp/upload/board
-        	ServletContext application = getServletContext();
-        	String webRoot = application.getRealPath("/");
+        	// C:\Workspaces\git_workspaces\hello-mvc\hello-mvc\src\main\webapp\\upload
+//        	ServletContext application = getServletContext();
+//        	String webRoot = application.getRealPath("/");//webapp경로
         	// File.separator 운영체제별 경로 구분자 (window: \, mac/linux : /)
         	// String saveDirectory = webRoot + "upload" + File.separator + "board";
-        	String saveDirectory = webRoot + "/upload/board";
+//        	String saveDirectory = webRoot + "/upload/board";
+        	String saveDirectory = getServletContext().getRealPath("/upload/board");
         	System.out.println(saveDirectory + "saveDirectory");
-        	// c. 최대파일크기 이미지만 업로드 10MB 정도로함
+        	// c. 최대파일크기 이미지만 업로드 10MB 정도로함(1킬로바이트 * 1024 = 1메가바이트) 
         	int maxPostSize = 1024 * 1024 * 10;
         	// d. 인코딩
         	String encoding = "utf-8";
@@ -76,9 +77,10 @@ public class BoardEnrollServlet extends HttpServlet {
         	
         	MultipartRequest multiReq = new MultipartRequest(
         			request, saveDirectory, maxPostSize, encoding, policy);
-        	
+        	//-----------여기까지 파일 저장 성공------------//
         	
 
+        	//--------db insert---------//
             // 3. 사용자 입력값 처리
             // 제목, 작성자, 첨부파일, 내용
             String title = multiReq.getParameter("title");
@@ -107,18 +109,8 @@ public class BoardEnrollServlet extends HttpServlet {
             // 4. 업무로직(db insert)
             int result = boardService.insertBoard(board);
             
-            // 4. 리다이렉트(DML 처리인 경우 url을 변경해서 새로고침 오류를 방지한다.)
-            // insert 1 [0] error ---> 따로 실패를 관리하지않음
-            // update / delete 1 0 error
-//            String msg = "";
-//            if(result == 1) {
-//                msg = "게시글이 등록되었습니다.";                
-//            }
-//            request
-//                .getSession()
-//                .setAttribute("msg", msg);
-//        // 5. 리다이렉트
-            response.sendRedirect(request.getContextPath() + "/board/boardList");
+            // 5. 리다이렉트
+            response.sendRedirect(request.getContextPath() + "/board/boardView?no=" + board.getNo());
         } catch(Exception e) {
             e.printStackTrace();
             throw e;

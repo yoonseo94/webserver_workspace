@@ -9,8 +9,10 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
 	<h2>게시판 </h2>
-<% if(loginMember != null) { %>
-	<input type="button" value="글쓰기" id="btn-add" onclick="location.href='<%= request.getContextPath() %>/board/boardEnroll';" />
+<% if(loginMember != null){ %>
+	<input 
+		type="button" value="글쓰기" id="btn-add" 
+		onclick="location.href='<%= request.getContextPath() %>/board/boardEnroll';"/>
 <% } %>
 	<table id="tbl-board">
 		<thead>
@@ -36,7 +38,13 @@
 %>
 			<tr>
 				<td><%= board.getNo() %></td>
-				<td><%= board.getTitle() %></td>
+				<td>
+					<a href="<%= request.getContextPath() %>/board/boardView?no=<%= board.getNo() %>"><%= board.getTitle() %></a>
+					<%-- 댓글개수 표시 --%>
+					<% if(board.getCommentCount() > 0){ %>
+						(<%= board.getCommentCount() %>)
+					<% } %>
+				</td>
 				<td><%= board.getMemberId() %></td>
 				<td><%= board.getRegDate() %></td>
 				<td>

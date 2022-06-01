@@ -72,7 +72,10 @@ public class MemberLoginServlet extends HttpServlet {
 		}
 		
 		// 4. 응답처리 : 리다이렉트
-		response.sendRedirect(request.getContextPath() + "/");
+		// 어디에 있다가 요청했니
+		// 절대주소값 http://localhost:8080/mvc/
+		String Referer = request.getHeader("Referer"); 
+		response.sendRedirect(Referer);
 	}
 
 }

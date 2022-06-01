@@ -5,7 +5,9 @@ import java.util.List;
 public class BoardExt extends Board {
 
 	private int attachCount;
-	private List<Attachment> attachments;
+	private int commentCount;
+	private List<Attachment> attachments; 
+	private List<BoardComment> comments; 
 
 	public int getAttachCount() {
 		return attachCount;
@@ -14,7 +16,7 @@ public class BoardExt extends Board {
 	public void setAttachCount(int attachCount) {
 		this.attachCount = attachCount;
 	}
-
+	
 	public List<Attachment> getAttachments() {
 		return attachments;
 	}
@@ -22,11 +24,27 @@ public class BoardExt extends Board {
 	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
 	}
+	
+	public List<BoardComment> getBoardComments(){
+		return comments;
+	}
+
+	public void setBoardComments(List<BoardComment> comments) {
+		this.comments = comments;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
 
 	@Override
 	public String toString() {
-		return "BoardExt [attachCount=" + attachCount + ", attachments=" + attachments + ", toString()="
-				+ super.toString() + "]";
+		return "BoardExt [attachCount=" + attachCount + ", attachments=" + attachments + ", comments=" + comments
+				+ ", toString()=" + super.toString() + "]";
 	}
 	
 }
