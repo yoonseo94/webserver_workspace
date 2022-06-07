@@ -66,7 +66,7 @@
 			</tr>
 			<tr>
 				<th>휴대폰<sup>*</sup></th>
-				<td>	
+				<td>
 					<input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" value="<%= phone %>" required><br>
 				</td>
 			</tr>

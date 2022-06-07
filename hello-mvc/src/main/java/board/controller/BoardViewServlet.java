@@ -75,7 +75,7 @@ public class BoardViewServlet extends HttpServlet {
 			request.setAttribute("board", board);
 			request.getRequestDispatcher("/WEB-INF/views/board/boardView.jsp")
 				.forward(request, response);
-			
+
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;

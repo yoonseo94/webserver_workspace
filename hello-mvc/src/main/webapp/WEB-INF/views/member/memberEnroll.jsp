@@ -5,7 +5,7 @@
 	<h2>회원 가입 정보 입력</h2>
 	<form name="memberEnrollFrm" method="POST">
 		<table>
-			<tr>
+			<tr> <!-- 즉시즉시 비동기로 중복검사를 하는게 추세 -->
 				<th>아이디<sup>*</sup></th>
 				<td>
 					<input type="text" placeholder="4글자이상" name="memberId" id="_memberId" value="sinsa" required>
@@ -112,7 +112,7 @@ document.memberEnrollFrm.onsubmit = () => {
 	if(!/^[A-Za-z0-9]{4,}$/.test(_memberId.value)){
 		alert("아이디는 영문자/숫자로 4글자 이상이어야 합니다.");
 		return false;
-	}  
+	}
 	// 중복검사여부 체크
 	if(idValid.value !== "1") {
 		alert("아이디 중복검사 해주세요.");
